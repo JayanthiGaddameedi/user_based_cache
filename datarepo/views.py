@@ -65,9 +65,9 @@ def login(request):
 @cache_page(settings.CACHE_TTL)
 @vary_on_headers('Authorization', )
 def list_newsfeed(request):
-    all_news = Newsfeed.objects.filter(user_id=request.user.id)
+    all_newsfeed = Newsfeed.objects.filter(user_id=request.user.id)
     data = []
-    for item in all_news:
+    for item in all_newsfeed:
         temp = {
             'news_id': item.id,
             'user_id': item.user_id,
