@@ -1,6 +1,5 @@
 # user_based_cache
 
-
 ##### packages
 
 1. django
@@ -15,10 +14,19 @@
 2. In settings.py add the following lines.
     1. ```
        Installed_apps = [
-           'rest_framework'
+           'rest_framework',
+           'rest_framework_simplejwt',
        ]
        ```
-    2. Add these cache lines in settings.py
+    2. Add the simplejwt in settings.py file
+       ```
+       REST_FRAMEWORK = {
+          'DEFAULT_AUTHENTICATION_CLASSES': [
+               'rest_framework_simplejwt.authentication.JWTAuthentication',
+           ],
+       }
+       ```
+    3. Add these cache lines in settings.py
        ``` 
        CACHES = {
        "default": {
@@ -44,7 +52,11 @@
    class Newsfeed(models.Model):
         news = models.CharField(max_length=255)
    ```
-4. admin.py
+4. As we are using Django’s built -in class AbstractUser, we need to add this user model to our settings.py file.
+    ```
+   AUTH_USER_MODEL = 'datarepo.CustomUser'  # datarepo is the app_name(app_name.model_name)
+   ```
+5. admin.py
    ```
    from django.contrib.auth.admin import UserAdmin
    from .models import Newsfeed
@@ -67,8 +79,8 @@
        list_display = ('id', 'news')
 
    ```
-5. views.py
-   
+6. views.py
+
     ```
    import random
    from django.conf import settings
@@ -103,7 +115,7 @@
        return Response(context, status=status.HTTP_200_OK)
 
     ```
-6. urls.py
+7. urls.py
    ```
    from datarepo.views import list_newsfeed
    
@@ -111,12 +123,12 @@
         path('list_newsfeed/', list_newsfeed)
     ]
    ```
-7. To check redis connected
+8. To check redis connected
    ```
    $ redis-cli ping
    PONG
    ```
-8. To test redis is working fine..!!
+9. To test redis is working fine..!!
    ```
     $ redis-cli
     127.0.0.1:6379> set test "hello world"
@@ -124,14 +136,14 @@
     127.0.0.1:6379> get test
     127.0.0.1:6379> "hello world"
     ```
-9. To know the cache keys
-    ```
-   $ python3 manage.py shell
+10. To know the cache keys
+     ```
+    $ python3 manage.py shell
    >>> from django.core.cache import cache
    >>> cache.keys('*')  # this line gives the list of keys presenet in cache
 
-   ```
-10. To clear the cache
+    ```
+11. To clear the cache
     ```
     >>> from django.core.cache import cache
     >>> cache.clear()
