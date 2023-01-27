@@ -139,8 +139,8 @@
 10. To know the cache keys
      ```
     $ python3 manage.py shell
-   >>> from django.core.cache import cache
-   >>> cache.keys('*')  # this line gives the list of keys presenet in cache
+      >>> from django.core.cache import cache
+      >>> cache.keys('*')  # this line gives the list of keys presenet in cache
 
     ```
 11. To clear the cache
